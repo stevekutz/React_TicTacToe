@@ -1,18 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+// import React from 'react';                       index_FINAL
+// import ReactDOM from 'react-dom';
+// import './index.css';
 
+
+
+
+import React from "react";
 
 const Square = (props) => {           // Square is refactored into a 'functional component' that only
   return (
-    <button className="square"
-      onClick={props.onClick}>
+    <button className="square" onClick={props.onClick}>
       {props.value}
     </button>
   )
 };
 
-class Board extends React.Component {         // rewrite as functional component
+class Board extends React.Component {             // rewrite as functional component
   renderSquare(i) {
     return (                                // WE REMOVE this.  when converting to functional component
       <Square                                     // Board now receives both props from Game
@@ -43,7 +46,7 @@ class Board extends React.Component {         // rewrite as functional component
       </div>
     );
   }
-};
+}
 
 class Game extends React.Component {       // State now resides in Game & constructor will be removed from Board
   constructor(props) {
@@ -55,8 +58,7 @@ class Game extends React.Component {       // State now resides in Game & constr
         }
       ],
       stepNumber: 0,                      // stepNumber added to state
-      xIsNext: true,
-      winningMove: [],
+      xIsNext: true
     };
   }
 
@@ -76,7 +78,6 @@ class Game extends React.Component {       // State now resides in Game & constr
       ]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext
-
     });
   }
 
@@ -92,8 +93,6 @@ class Game extends React.Component {       // State now resides in Game & constr
     const current = history[this.state.stepNumber];             // we track current using stepNumber
     const winner = calculateWinner(current.squares);            // instead of history length
 
-    // console.log(winner[1]);
-
     const moves = history.map((step, move) => {                 // mapping over history array
       const desc = move ?
         'Go to move #' + move :
@@ -105,24 +104,9 @@ class Game extends React.Component {       // State now resides in Game & constr
       );
     });
 
-
     let status;
-
-    // const winningSquares = ` ${winner[1]}  `;  //  ${winner[2]}  ${winner[3]}
-
-    // console.log(winningSquares);
-
-
-    let winningSquares;
-
     if (winner) {
-      status = "Winner: " + winner[0];
-      winningSquares = ` Winning Move ${winner[1]}  ${winner[2]}  ${winner[3]}`;
-
-
-      console.log('winning move' + winner[1] + winner[2] + winner[3]);
-     console.log(winner[1]);
-
+      status = "Winner: " + winner;
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
@@ -137,9 +121,7 @@ class Game extends React.Component {       // State now resides in Game & constr
         </div>
         <div className="game-info">
           <div>{status}</div>
-          {/*  <div>{winner}</div>   */}
           <ol>{moves}</ol>
-          <ol>{winningSquares}</ol>
         </div>
       </div>
     );
@@ -150,7 +132,7 @@ class Game extends React.Component {       // State now resides in Game & constr
 
 ReactDOM.render(<Game />, document.getElementById("root"));
 
-function calculateWinner(squares, winningMove) {
+function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -163,12 +145,8 @@ function calculateWinner(squares, winningMove) {
   ];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
-
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      // return squares[a];
-      winningMove = [squares[a], a, b, c];
-
-      return (winningMove);
+      return squares[a];
     }
   }
   return null;
